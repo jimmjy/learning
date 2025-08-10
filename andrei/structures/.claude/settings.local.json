@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Memory_Server__initialize_conversation",
+      "mcp__Memory_Server__recall"
+    ],
+    "deny": []
+  }
+}
