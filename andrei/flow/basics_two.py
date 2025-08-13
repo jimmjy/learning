@@ -19,8 +19,8 @@ else:
 """
 Syntax:
 condition_if_true if condition else condition_if_else
-the if is going to check condition first, if it is true, it uses condition_if_true or else it will
-use condition_if_else
+the if is going to check condition first, if it is true, it uses condition_if_true or 
+else it will use condition_if_else
 
 *Note: this is not the same as comprehension but can be combined
 """

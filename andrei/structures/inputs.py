@@ -5,9 +5,10 @@ def main():
     length_of_password = len(password)
 
     print(
-        f"{username}, your password {length_of_password * '*'} is {length_of_password} letters long"
+        f"{username}, your password {length_of_password * '*'} is {length_of_password}"
     )
     print("Hello from structures!")
+    print("Hello from {length_of_password}")
 
 
 if __name__ == "__main__":

@@ -4,14 +4,18 @@
 
 # for slicing with [:] even though stop is exclusive,
 # if it is omited, it implies including last element
-
 basket = [1, 2, 3, 4, 5]
 basket_two = ["a", "b", "c", "d", "e", "b"]
+
+
+def bad_function():
+    pass
 
 
 def sorted_local():
     # this is in place sorted() creates a new list or .copy
     basket_two.sort()
+
     print(f"Sorted baskets: {basket_two}")
     basket_two.reverse()
     print(f"Reversed: {basket_two}")
