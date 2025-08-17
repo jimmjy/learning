@@ -20,5 +20,3 @@ class Person:
 
 
 james = Person("james")
-
-print(james)
