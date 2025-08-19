@@ -18,6 +18,8 @@ class PlayerCharacter:
 
     @classmethod
     def adding_things(cls, num1, num2):
+        # cls not used but typically would be used to instantiate or maybe call a static
+        # method
         return num1 + num2
 
     @staticmethod
