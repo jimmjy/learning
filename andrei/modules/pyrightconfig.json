@@ -1,0 +1,10 @@
+{
+  "useLibraryCodeForTypes": true,
+  "autoSearchPaths": true,
+  "extraPaths": ["."],
+  "executionEnvironments": [
+    {
+      "root": "."
+    }
+  ]
+}
