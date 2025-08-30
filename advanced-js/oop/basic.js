@@ -3,6 +3,7 @@ let o1 = {};
 
 let o2 = new Object(); // same as above creation
 
+
 o1.name = "Whisky";
 o1["name"] = "whiskyOne"; // two different ways to set but the same
 
