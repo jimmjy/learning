@@ -10,7 +10,7 @@
  #privateField = "Private Field" es2021 maybe
  */
 
-class Cat {
+export class Cat {
   static numOfCats = 0;
   numLegs = 4; // this is a public field and sticks with instance
 
