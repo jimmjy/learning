@@ -18,36 +18,7 @@ setTimeout(() => {
 // debounce: adding a pause before some function runs.  This is to
 // control performance and reduce unnecessary things
 
-const fakeQueryRequest = (event) => {
-  console.log("requested api info", event);
-};
-
-const input = document.getElementById("input");
-
-// this is how we control and reset a timeout when the user interacts
-
 // let debounceTime;
-
-const debounced = (fn, delay) => {
-  let timeoutId;
-
-  return function (event) {
-    console.log;
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    timeoutId = setTimeout(() => {
-      fn(event.target.value);
-    }, delay);
-  };
-};
-
-const debouncedQuery = debounced(fakeQueryRequest, 1000);
-
-/** Basically setup, we basically cleartimeout when someone types */
-input.addEventListener("input", debouncedQuery);
-
 //   () => {
 //   // debouncedQuery();
 //   // clearTimeout(debounceTime);
