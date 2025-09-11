@@ -5,6 +5,12 @@ export const metadata: Metadata = {
     absolute: "Blog",
   },
 };
-export default function Blog() {
+
+export default async function Blog() {
+  await new Promise((r) => {
+    setTimeout(() => {
+      r("test");
+    }, 2000);
+  });
   return <h1>My Blog</h1>;
 }

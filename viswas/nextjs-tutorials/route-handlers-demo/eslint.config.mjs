@@ -20,15 +20,6 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
-  {
-    rules: {
-      "lines-between-class-members": [
-        "error",
-        "always",
-        { exceptAfterSingleLine: true },
-      ],
-    },
-  },
 ];
 
 export default eslintConfig;
