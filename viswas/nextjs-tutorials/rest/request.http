@@ -3,6 +3,11 @@
 GET http://localhost:3000/comments HTTP/1.1
 
 
+### get based off query param
+
+GET http://localhost:3000/comments?query=second HTTP/1.1
+
+
 ### post to comments
 
 POST http://localhost:3000/comments HTTP/1.1
@@ -26,3 +31,26 @@ PATCH http://localhost:3000/comments/3 HTTP/1.1
 {
   "text": "Updated comment"
 }
+
+
+### Delete request
+
+DELETE http://localhost:3000/comments/3 HTTP/1.1
+
+
+### get profile api
+
+GET http://localhost:3000/profile/api HTTP/1.1
+Accept: */*
+Authorization: Bearer 12345
+Cookie: theme=dark
+
+
+### get time caching example
+
+GET http://localhost:3000/time HTTP/1.1
+
+
+### also caching
+
+GET http://localhost:3000/categories HTTP/1.1
