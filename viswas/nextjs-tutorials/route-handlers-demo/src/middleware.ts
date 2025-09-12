@@ -20,6 +20,7 @@ import { NextRequest, NextResponse } from "next/server";
 //
 //     // if we want to rewrite the url to something else regardless of the page
 //     // this will take us to /hello but leave the url as /profile
+//     // as the requested url was originally /profile
 //     return NextResponse.rewrite(new URL("/hello", request.nextUrl));
 //   }
 // }
