@@ -5,6 +5,17 @@
   --color-mint-50: "eefffa" /* --spacing */;
 }
 
+/* if we want to use just standard css, we would just type it out as usual, such as the font-size below */
+/* if we want to use a tailwind utility class, we use another directive, called @apply and follow with utility class */
+/* @layer { */
+/*   h1 { */
+/*     font-size: 80px; */
+/*   } */
+/* } */
+
+@layer {
+}
+
 .test {
   display: flex;
   align-items: safe;

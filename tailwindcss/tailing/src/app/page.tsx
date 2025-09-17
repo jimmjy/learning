@@ -1,3 +1,4 @@
+import Directives from "@/components/directives";
 import Group from "@/components/group";
 import Responsive from "@/components/responsive";
 
@@ -28,6 +29,7 @@ export default function Home() {
           Custom Value
         </button>
       </div>
+      <Directives />
     </>
   );
 }
