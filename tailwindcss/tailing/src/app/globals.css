@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@theme {
+  --color-mint: #00d1ad;
+  --color-mint-50: "eefffa" /* --spacing */;
+}
+
 .test {
   display: flex;
   align-items: safe;

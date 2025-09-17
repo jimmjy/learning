@@ -22,6 +22,12 @@ export default function Home() {
       <div>
         <Group />
       </div>
+      <div className="border-1 p-4 flex flex-col gap-4">
+        <p>Button with custom values</p>
+        <button className="outline-1 outline-mint bg-[#3da10a] px-[6.2px] py-2 rounded-[200px] size-fit">
+          Custom Value
+        </button>
+      </div>
     </>
   );
 }
