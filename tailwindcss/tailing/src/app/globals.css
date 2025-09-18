@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-mint: #00d1ad;
   --color-mint-50: "eefffa" /* --spacing */;
@@ -13,35 +15,42 @@
 /*   } */
 /* } */
 
-@layer {
+@layer base {
+  /* h1 { */
+  /*   @apply text-4xl font-bold; */
+  /* } */
+  /**/
+  /* h2 { */
+  /*   @apply text-2xl font-semibold; */
+  /*   background-color: red; */
+  /* } */
+  /**/
+  /* p { */
+  /*   @apply text-gray-400; */
+  /* } */
 }
+
+/* creating our own component type styles */
+@layer components {
+  .btn-danger {
+    @apply rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-blue-200;
+  }
+}
+
+/* Create our own directive */
+@layer directives {
+  .flex-center {
+    @apply flex items-center justify-center;
+
+    p {
+      color: black;
+    }
+  }
+}
+
+/* @custom-variant dark (&:where(.dark, .dark *)) */
 
 .test {
   display: flex;
   align-items: safe;
 }
-
-/* :root { */
-/*   --background: #ffffff; */
-/*   --foreground: #171717; */
-/* } */
-/**/
-/* @theme inline { */
-/*   --color-background: var(--background); */
-/*   --color-foreground: var(--foreground); */
-/*   --font-sans: var(--font-geist-sans); */
-/*   --font-mono: var(--font-geist-mono); */
-/* } */
-/**/
-/* @media (prefers-color-scheme: dark) { */
-/*   :root { */
-/*     --background: #0a0a0a; */
-/*     --foreground: #ededed; */
-/*   } */
-/* } */
-/**/
-/* body { */
-/*   background: var(--background); */
-/*   color: var(--foreground); */
-/*   font-family: Arial, Helvetica, sans-serif; */
-/* } */

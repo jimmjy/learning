@@ -1,10 +1,11 @@
+import DarkMode from "@/components/dark-mode";
 import Directives from "@/components/directives";
 import Group from "@/components/group";
 import Responsive from "@/components/responsive";
 
 export default function Home() {
   return (
-    <>
+    <div className="flex flex-col gap-10">
       <div className="hidden h-screen grid-cols-3">
         <div className="h-12 w-12 bg-green-500">Hello</div>
         <div className="h-12 w-12 bg-red-500">My</div>
@@ -30,7 +31,8 @@ export default function Home() {
         </button>
       </div>
       <Directives />
-    </>
+      <DarkMode />
+    </div>
   );
 }
 
