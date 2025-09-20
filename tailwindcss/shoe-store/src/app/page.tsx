@@ -1,8 +1,9 @@
+import ShoeDetail from "@/components/shoeDetail";
+
 export default function Home() {
   return (
     <div>
-      <div>hello</div>
-      <div>Hi</div>
+      <ShoeDetail />
     </div>
   );
 }

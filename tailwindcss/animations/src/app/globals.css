@@ -1,17 +1,5 @@
 @import "tailwindcss";
 
-@layer base {
-  body {
-    font-family: "Nunito Sans Variable", sans-serif;
-  }
-}
-
-@layer utilities {
-  .flex-center {
-    @apply flex items-center justify-center;
-  }
-}
-
 /* :root { */
 /*   --background: #ffffff; */
 /*   --foreground: #171717; */
