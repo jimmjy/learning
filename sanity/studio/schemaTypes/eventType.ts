@@ -10,5 +10,44 @@ export const eventType = defineType({
       name: "name",
       type: "string",
     }),
+    defineField({
+      name: "slug",
+      type: "slug",
+    }),
+    defineField({
+      name: "eventType",
+      type: "string",
+    }),
+    defineField({
+      name: "date",
+      type: "datetime",
+    }),
+    defineField({
+      name: "doorsOpen",
+      type: "number",
+    }),
+    defineField({
+      name: "venue",
+      type: "reference",
+      to: [{type: "venue"}],
+    }),
+    defineField({
+      name: "headline",
+      type: "reference",
+      to: [{type: "artist"}],
+    }),
+    defineField({
+      name: "image",
+      type: "image",
+    }),
+    defineField({
+      name: "details",
+      type: "array",
+      of: [{type: "block"}],
+    }),
+    defineField({
+      name: "tickets",
+      type: "url",
+    }),
   ],
 })

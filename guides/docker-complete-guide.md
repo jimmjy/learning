@@ -2,14 +2,19 @@
 
 ## The Big Picture: What is Docker?
 
-Imagine you're a chef who travels the world cooking in different kitchens. Every kitchen is different:
+Imagine you're a chef who travels the world cooking in different kitchens.  
+Every kitchen is different:
+
 - Different stoves, ovens, ingredients
 - Different operating systems (gas vs electric)
 - Different versions of tools
 
-**Without Docker:** You'd have to learn each kitchen, install your tools everywhere, and your recipes might not work the same way.
+**Without Docker:** You'd have to learn each kitchen, install your tools  
+everywhere, and your recipes might not work the same way.
 
-**With Docker:** You bring your own portable kitchen (container) that works exactly the same everywhere! Your "kitchen box" contains:
+**With Docker:** You bring your own portable kitchen (container) that works  
+exactly the same everywhere! Your "kitchen box" contains:
+
 - Your recipe (application code)
 - All your ingredients (dependencies)
 - Your tools (runtime environment)
@@ -20,12 +25,14 @@ Imagine you're a chef who travels the world cooking in different kitchens. Every
 ### Images vs Containers - The Blueprint vs The House
 
 **Docker Image** = Blueprint for a house
+
 - Instructions for building something
 - Doesn't change once created
 - Can be shared with others
 - Used to create containers
 
 **Docker Container** = Actual house built from blueprint
+
 - A running instance of an image
 - Has its own space and resources
 - Can be started, stopped, destroyed
@@ -172,6 +179,7 @@ CMD ["npm", "start"]
 ```
 
 **Why multi-stage?**
+
 - Builder stage has all build tools (heavy)
 - Production stage only has runtime files (light)
 - Final image is much smaller
@@ -182,12 +190,14 @@ CMD ["npm", "start"]
 
 Imagine Docker containers are apartments in a building:
 
-**Default Network (bridge):** 
+**Default Network (bridge):**
+
 - Each apartment has its own internal phone system
 - Apartments can call each other using apartment numbers
 - Outside world can only reach apartments through the front desk (port mapping)
 
 **Custom Networks:**
+
 - Like creating private phone networks for specific groups
 - Database apartments can talk to app apartments privately
 - More secure and organized
@@ -233,7 +243,8 @@ docker run -d \
 # Port: 5432 (internal port, no mapping needed)
 ```
 
-**Key Insight:** Containers on the same network can talk to each other using container names as hostnames!
+**Key Insight:** Containers on the same network can talk to each other using  
+container names as hostnames!
 
 ### Port Mapping - The Front Desk
 
@@ -270,6 +281,7 @@ docker run postgres:13           # Start new container
 ### Types of Storage
 
 #### 1. Named Volumes (Recommended)
+
 Like having a safety deposit box at the bank:
 
 ```bash
@@ -290,6 +302,7 @@ docker run -d --name postgres-new -v my-database-data:/var/lib/postgresql/data p
 ```
 
 #### 2. Bind Mounts (Development)
+
 Like connecting your home folder to the container:
 
 ```bash
@@ -307,6 +320,7 @@ docker run -d \
 **Perfect for development:** Edit code locally, see changes instantly in container.
 
 #### 3. Anonymous Volumes
+
 Temporary storage that Docker manages:
 
 ```bash
@@ -337,6 +351,7 @@ docker run -d \
 ```
 
 **What's happening:**
+
 - `-v "$(pwd):/app"` - Mount current directory to /app
 - `-v /app/node_modules` - Protect node_modules from being overwritten
 - Changes to your local files trigger hot reload in container
@@ -389,6 +404,7 @@ docker exec -it postgres-dev psql -U developer -d myapp_development
 ```
 
 **Create some sample data:**
+
 ```sql
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -397,7 +413,7 @@ CREATE TABLE users (
   created_at TIMESTAMP DEFAULT NOW()
 );
 
-INSERT INTO users (name, email) VALUES 
+INSERT INTO users (name, email) VALUES
 ('John Doe', 'john@example.com'),
 ('Jane Smith', 'jane@example.com');
 
@@ -445,27 +461,29 @@ docker exec -it redis-dev redis-cli
 
 ## Docker Compose - Managing Multiple Containers
 
-When you have multiple containers (app + database + cache), managing them individually becomes tedious. Docker Compose is like a smart home system that controls all your devices with one command.
+When you have multiple containers (app + database + cache), managing them  
+individually becomes tedious. Docker Compose is like a smart home system that  
+controls all your devices with one command.
 
 ### Basic docker-compose.yml
 
 ```yaml
 # docker-compose.yml
-version: '3.8'
+version: "3.8"
 
 services:
   # Web application
   app:
-    build: .                    # Build from Dockerfile in current directory
+    build: . # Build from Dockerfile in current directory
     ports:
-      - "3000:3000"            # Map port 3000 to host
+      - "3000:3000" # Map port 3000 to host
     environment:
       - NODE_ENV=development
       - DATABASE_URL=postgresql://developer:dev_password@postgres:5432/myapp_development
       - REDIS_URL=redis://redis:6379
     volumes:
-      - .:/app                 # Mount current directory for development
-      - /app/node_modules      # Protect node_modules
+      - .:/app # Mount current directory for development
+      - /app/node_modules # Protect node_modules
     depends_on:
       - postgres
       - redis
@@ -482,7 +500,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"           # Expose to host for external access
+      - "5432:5432" # Expose to host for external access
     networks:
       - app-network
 
@@ -492,7 +510,7 @@ services:
     volumes:
       - redis-data:/data
     ports:
-      - "6379:6379"           # Expose to host for external access
+      - "6379:6379" # Expose to host for external access
     networks:
       - app-network
 
@@ -556,7 +574,7 @@ docker-compose restart app
 
 ```yaml
 # docker-compose.dev.yml
-version: '3.8'
+version: "3.8"
 
 services:
   # Frontend (React/Next.js)
@@ -640,7 +658,7 @@ volumes:
 
 ```yaml
 # docker-compose.prod.yml
-version: '3.8'
+version: "3.8"
 
 services:
   # Nginx reverse proxy
@@ -939,6 +957,7 @@ services:
 Let's create a complete example project:
 
 ### Project Structure
+
 ```
 my-fullstack-app/
 ├── docker-compose.yml
@@ -951,6 +970,7 @@ my-fullstack-app/
 ```
 
 ### 1. package.json
+
 ```json
 {
   "name": "docker-fullstack-example",
@@ -970,57 +990,61 @@ my-fullstack-app/
 ```
 
 ### 2. server.js
-```javascript
-const express = require('express')
-const { Pool } = require('pg')
 
-const app = express()
-const port = process.env.PORT || 3000
+```javascript
+const express = require("express");
+const { Pool } = require("pg");
+
+const app = express();
+const port = process.env.PORT || 3000;
 
 // Database connection
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
-})
+  connectionString: process.env.DATABASE_URL,
+});
 
-app.use(express.json())
+app.use(express.json());
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'healthy', timestamp: new Date().toISOString() })
-})
+app.get("/health", (req, res) => {
+  res.json({ status: "healthy", timestamp: new Date().toISOString() });
+});
 
 // Get all users
-app.get('/users', async (req, res) => {
+app.get("/users", async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC')
-    res.json(result.rows)
+    const result = await pool.query(
+      "SELECT * FROM users ORDER BY created_at DESC",
+    );
+    res.json(result.rows);
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Database error' })
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
   }
-})
+});
 
 // Create user
-app.post('/users', async (req, res) => {
+app.post("/users", async (req, res) => {
   try {
-    const { name, email } = req.body
+    const { name, email } = req.body;
     const result = await pool.query(
-      'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *',
-      [name, email]
-    )
-    res.status(201).json(result.rows[0])
+      "INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *",
+      [name, email],
+    );
+    res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Database error' })
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
   }
-})
+});
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`)
-})
+  console.log(`Server running on port ${port}`);
+});
 ```
 
 ### 3. Dockerfile
+
 ```dockerfile
 FROM node:18-alpine
 
@@ -1052,7 +1076,8 @@ CMD ["npm", "start"]
 ```
 
 ### 4. .dockerignore
-```
+
+```gitignore
 node_modules
 npm-debug.log
 .git
@@ -1066,6 +1091,7 @@ coverage
 ```
 
 ### 5. database/init.sql
+
 ```sql
 -- This file runs automatically when PostgreSQL container starts for the first time
 
@@ -1077,15 +1103,16 @@ CREATE TABLE users (
 );
 
 -- Insert some sample data
-INSERT INTO users (name, email) VALUES 
+INSERT INTO users (name, email) VALUES
 ('John Doe', 'john@example.com'),
 ('Jane Smith', 'jane@example.com'),
 ('Bob Johnson', 'bob@example.com');
 ```
 
 ### 6. docker-compose.yml
+
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   app:
@@ -1177,20 +1204,24 @@ docker-compose down
 ## Summary: Key Docker Concepts
 
 ### Images vs Containers
+
 - **Image**: Recipe/blueprint (immutable)
 - **Container**: Running instance of image (can change)
 
 ### Networking
+
 - Containers on same network can communicate using container names
 - Use port mapping to expose services to host
 - Custom networks provide isolation and better control
 
 ### Volumes
+
 - **Named volumes**: Best for production data (managed by Docker)
 - **Bind mounts**: Best for development (direct host directory access)
 - **Anonymous volumes**: Temporary data that Docker manages
 
 ### Best Practices
+
 1. Use specific image tags, not `latest`
 2. Copy dependency files before source code (better caching)
 3. Use non-root users for security
@@ -1199,10 +1230,13 @@ docker-compose down
 6. Use multi-stage builds for smaller production images
 
 ### Development Workflow
+
 1. Create Dockerfile and docker-compose.yml
 2. Use bind mounts for live code reloading
 3. Use named volumes for database persistence
 4. Access services via localhost with port mapping
 5. Use container names for inter-service communication
 
-Remember: Docker is like having a magical moving truck that can pack up your entire development environment and move it anywhere, setting up exactly the same way every time! 🚚✨
+Remember: Docker is like having a magical moving truck that can pack up your  
+entire development environment and move it anywhere, setting up exactly the  
+same way every time! 🚚✨

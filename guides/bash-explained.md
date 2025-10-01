@@ -1,6 +1,7 @@
 # Bash Explained: From Basic to Advanced (Like You're 5)
 
 ## Table of Contents
+
 1. [What is Bash Really?](#what-is-bash-really)
 2. [File Permissions Explained](#file-permissions-explained)
 3. [Grep: Your Text Detective](#grep-your-text-detective)
@@ -15,16 +16,21 @@
 
 ## What is Bash Really?
 
-Think of bash like a **translator between you and your computer**. When you type `ls`, you're not actually speaking computer language - bash translates that into something your computer understands.
+Think of bash like a **translator between you and your computer**. When you  
+type `ls`, you're not actually speaking computer language - bash translates  
+that into something your computer understands.
 
 ### The Shell vs The Terminal
+
 - **Terminal**: The window you see (like a picture frame)
 - **Shell**: The program running inside (bash is one type of shell, like zsh, fish, etc.)
 
 It's like the difference between your TV (terminal) and the Netflix app (shell) running on it.
 
 ### Why Bash Matters for Developers
+
 As a developer using neovim, you're constantly:
+
 - Running commands (`npm install`, `git commit`)
 - Moving files around
 - Searching through code
@@ -41,10 +47,11 @@ Bash is the engine making all of this possible.
 Imagine every file and folder is a house, and there are three types of people who might want to visit:
 
 1. **Owner** (you) - The person who owns the house
-2. **Group** - Your family/roommates 
+2. **Group** - Your family/roommates
 3. **Others** - Everyone else in the neighborhood
 
 Each of these people can have three types of access:
+
 - **Read (r)** - Can look inside the house
 - **Write (w)** - Can rearrange furniture
 - **Execute (x)** - Can actually enter and use the house
@@ -52,6 +59,7 @@ Each of these people can have three types of access:
 ### Reading Permission Strings
 
 When you run `ls -l`, you see something like:
+
 ```
 -rw-r--r--  1 james staff  1234 Sep 26 10:30 myfile.txt
 drwxr-xr-x  5 james staff   160 Sep 26 10:30 myfolder
@@ -63,7 +71,7 @@ Let's break down that first part: `-rw-r--r--`
 -  rw-  r--  r--
 │   │   │    │
 │   │   │    └── Others: read only
-│   │   └────── Group: read only  
+│   │   └────── Group: read only
 │   └────────── Owner: read + write
 └─────────────── File type (- = file, d = directory)
 ```
@@ -71,10 +79,12 @@ Let's break down that first part: `-rw-r--r--`
 ### Understanding Execute Permission
 
 For **files**: Execute means "can run this as a program"
+
 - Shell scripts need execute permission to run
 - Without it, you get "Permission denied"
 
 For **directories**: Execute means "can enter this directory"
+
 - Without execute on a folder, you can't `cd` into it
 - Even if you can read the folder contents!
 
@@ -97,12 +107,15 @@ chmod go-w myfile.txt
 ```
 
 #### The Number System Explained
+
 Each digit represents owner/group/others, and each number is the sum of:
+
 - 4 = read
-- 2 = write  
+- 2 = write
 - 1 = execute
 
 So `755` means:
+
 - Owner: 7 (4+2+1) = read, write, execute
 - Group: 5 (4+1) = read, execute
 - Others: 5 (4+1) = read, execute
@@ -164,7 +177,7 @@ grep -n "function" app.js
 # -A 3: Show 3 lines AFTER each match
 grep -A 3 "Error:" logfile.txt
 
-# -B 2: Show 2 lines BEFORE each match  
+# -B 2: Show 2 lines BEFORE each match
 grep -B 2 "crash" logfile.txt
 
 # -C 2: Show 2 lines of CONTEXT (before and after)
@@ -257,6 +270,7 @@ du -h | sort -hr | head -10
 ### Understanding Each Step
 
 Let's break down this complex pipe:
+
 ```bash
 cat access.log | grep "GET" | awk '{print $7}' | sort | uniq -c | sort -nr | head -10
 ```
@@ -264,7 +278,7 @@ cat access.log | grep "GET" | awk '{print $7}' | sort | uniq -c | sort -nr | hea
 1. `cat access.log` - Read the log file
 2. `grep "GET"` - Only keep lines with GET requests
 3. `awk '{print $7}'` - Extract the 7th column (URL path)
-4. `sort` - Sort the URLs alphabetically  
+4. `sort` - Sort the URLs alphabetically
 5. `uniq -c` - Count unique occurrences
 6. `sort -nr` - Sort by count, highest first
 7. `head -10` - Show top 10 results
@@ -405,6 +419,7 @@ echo "Build complete! Files are in $build_dir"
 ```
 
 Save this as `build.sh`, then:
+
 ```bash
 chmod +x build.sh  # Make it executable
 ./build.sh         # Run it
@@ -488,7 +503,7 @@ done
 backup_file() {
     local file=$1  # First argument
     local backup_dir=$2  # Second argument
-    
+
     if [ -f "$file" ]; then
         cp "$file" "$backup_dir/$(basename $file).bak"
         echo "Backed up $file"
@@ -528,6 +543,7 @@ echo "Number of arguments: $#"
 ### Exit Codes: How Commands Communicate Success
 
 Every command returns an **exit code** (like a report card):
+
 - `0` = Success (A+)
 - `1-255` = Various types of failure (F)
 
@@ -939,6 +955,7 @@ if [[ "$string" == *"pattern"* ]]; then
 ## Quick Reference
 
 ### Most Useful Commands
+
 ```bash
 # File operations
 ls -la              # List files with details
@@ -966,6 +983,7 @@ which command       # Find command location
 ```
 
 ### Essential Shortcuts
+
 ```bash
 Ctrl+C              # Kill current command
 Ctrl+Z              # Suspend current command
@@ -975,3 +993,4 @@ Ctrl+R              # Search command history
 ```
 
 Remember: The best way to learn bash is by using it daily. Start with simple scripts and gradually add complexity. Don't try to memorize everything - even experienced developers look things up constantly!
+
