@@ -7,7 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "sanity dev",
-    "start": "sanity start",
+    "dev-docker": "sanity dev --host=0.0.0.0 --port=8000",
+    "start": "sanity start --host 0.0.0.0",
     "build": "sanity build",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
@@ -17,10 +18,10 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/vision": "^4.10.1",
+    "@sanity/vision": "^4.10.2",
     "react": "^19.1",
     "react-dom": "^19.1",
-    "sanity": "^4.10.1",
+    "sanity": "^4.10.2",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {

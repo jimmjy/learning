@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Dashboard - Error States</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+            background: #f5f5f7;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #1d1d1f;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e5e7;
+        }
+
+        /* Error Banner (Top of page) */
+        .error-banner {
+            background: #fff;
+            border-left: 4px solid #ff3b30;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .error-banner.warning {
+            border-left-color: #ff9500;
+        }
+
+        .error-icon {
+            font-size: 1.5rem;
+        }
+
+        .error-content {
+            flex: 1;
+        }
+
+        .error-title {
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+
+        .error-message {
+            font-size: 0.9rem;
+            color: #6e6e73;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .retry-button {
+            padding: 8px 16px;
+            background: #007aff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .retry-button:hover {
+            background: #0051d5;
+        }
+
+        .dismiss-button {
+            padding: 8px 16px;
+            background: transparent;
+            color: #86868b;
+            border: 1px solid #e5e5e7;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dismiss-button:hover {
+            background: #f5f5f7;
+            color: #1d1d1f;
+        }
+
+        /* Error State Card (Empty State) */
+        .error-state-card {
+            background: white;
+            border-radius: 12px;
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .error-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .error-state-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 12px;
+        }
+
+        .error-state-description {
+            font-size: 1rem;
+            color: #6e6e73;
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Metric Card with Error */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .metric-card.error {
+            background: #fff5f5;
+            border: 1px solid #ffe5e5;
+        }
+
+        .metric-card.loading {
+            opacity: 0.6;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #86868b;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1d1d1f;
+            line-height: 1.2;
+        }
+
+        .metric-card.error .metric-value {
+            color: #ff3b30;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metric-error-icon {
+            font-size: 1.2rem;
+        }
+
+        .metric-description {
+            font-size: 0.85rem;
+            color: #6e6e73;
+            margin-top: 8px;
+        }
+
+        /* Loading State */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 6px;
+        }
+
+        .skeleton-text {
+            height: 16px;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-value {
+            height: 48px;
+            width: 60%;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1d1d1f;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.error {
+            background: #ff3b30;
+        }
+
+        .toast.warning {
+            background: #ff9500;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Network Status Indicator */
+        .network-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .network-status.offline {
+            background: #fff5f5;
+            color: #ff3b30;
+        }
+
+        .network-status.slow {
+            background: #fff9e6;
+            color: #ff9500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Error State Mockups</h1>
+
+        <!-- Scenario 1: Error Banner (Network Error) -->
+        <div class="section">
+            <div class="section-title">1. Error Banner - Network Failure</div>
+            <div class="error-banner">
+                <div class="error-icon">⚠️</div>
+                <div class="error-content">
+                    <div class="error-title">Failed to load campaign data</div>
+                    <div class="error-message">Unable to connect to the server. Please check your internet connection and try again.</div>
+                </div>
+                <div class="error-actions">
+                    <button class="retry-button">Retry</button>
+                    <button class="dismiss-button">Dismiss</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario 2: Warning Banner (Partial Failure) -->
+        <div class="section">
+            <div class="section-title">2. Warning Banner - Auto-refresh Failed</div>
+            <div class="error-banner warning">
+                <div class="error-icon">⚠️</div>
+                <div class="error-content">
+                    <div class="error-title">Auto-refresh paused</div>
+                    <div class="error-message">Unable to fetch latest data. Showing last successful update from 2 minutes ago.</div>
+                </div>
+                <div class="error-actions">
+                    <button class="retry-button">Retry Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario 3: Empty State (Campaign Not Found) -->
+        <div class="section">
+            <div class="section-title">3. Empty State - Campaign Not Found</div>
+            <div class="error-state-card">
+                <div class="error-state-icon">🔍</div>
+                <div class="error-state-title">Campaign Not Found</div>
+                <div class="error-state-description">
+                    The campaign you're looking for doesn't exist or has been removed. Please check the campaign ID or return to the campaign list.
+                </div>
+                <div class="error-actions" style="justify-content: center;">
+                    <button class="retry-button">Back to Campaigns</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario 4: Empty State (No Campaigns) -->
+        <div class="section">
+            <div class="section-title">4. Empty State - No Campaigns Available</div>
+            <div class="error-state-card">
+                <div class="error-state-icon">📊</div>
+                <div class="error-state-title">No Campaigns Yet</div>
+                <div class="error-state-description">
+                    There are no campaigns to display. Create your first campaign to start tracking performance metrics.
+                </div>
+                <div class="error-actions" style="justify-content: center;">
+                    <button class="retry-button">Refresh</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario 5: Metric Cards with Errors -->
+        <div class="section">
+            <div class="section-title">5. Metric Cards - Mixed States</div>
+            <div class="metrics-grid">
+                <!-- Normal Loaded -->
+                <div class="metric-card">
+                    <div class="metric-label">Total Impressions</div>
+                    <div class="metric-value">1,234</div>
+                    <div class="metric-description">Sum of all impressions</div>
+                </div>
+
+                <!-- Error State -->
+                <div class="metric-card error">
+                    <div class="metric-label">Total Clicks</div>
+                    <div class="metric-value">
+                        <span class="metric-error-icon">⚠️</span>
+                        <span>Error</span>
+                    </div>
+                    <div class="metric-description">Failed to load data</div>
+                </div>
+
+                <!-- Loading State -->
+                <div class="metric-card loading">
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-value"></div>
+                    <div class="skeleton skeleton-text" style="height: 12px; width: 80%; margin-top: 12px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario 6: Network Status Indicators -->
+        <div class="section">
+            <div class="section-title">6. Network Status Indicators</div>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                <div class="network-status offline">
+                    <span class="status-dot"></span>
+                    <span>Offline</span>
+                </div>
+                <div class="network-status slow">
+                    <span class="status-dot"></span>
+                    <span>Slow Connection</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario 7: Toast Notifications -->
+        <div class="section">
+            <div class="section-title">7. Toast Notifications (Bottom Right)</div>
+            <div class="toast error">
+                <div style="font-size: 1.2rem;">❌</div>
+                <div>
+                    <div style="font-weight: 600;">Failed to update</div>
+                    <div style="font-size: 0.85rem; opacity: 0.9;">Retrying in 5 seconds...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
