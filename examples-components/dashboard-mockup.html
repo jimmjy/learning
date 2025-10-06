@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campaign Dashboard - Modern Design</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background: #f8f9fd;
+        color: #2d3748;
+        line-height: 1.6;
+      }
+
+      /* Navbar */
+      .navbar {
+        background: white;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 16px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 800;
+        font-size: 18px;
+      }
+
+      .navbar-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1a202c;
+      }
+
+      .navbar-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .back-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #f7fafc;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #4b5563;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .back-button:hover {
+        background: #edf2f7;
+        transform: translateX(-2px);
+      }
+
+      .back-arrow {
+        font-size: 16px;
+      }
+
+      .divider {
+        color: #e2e8f0;
+        font-size: 20px;
+      }
+
+      .selector-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .selector-label {
+        font-size: 14px;
+        color: #718096;
+        font-weight: 600;
+      }
+
+      .campaign-selector {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 10px 36px 10px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1a202c;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .campaign-selector:hover {
+        border-color: #667eea;
+      }
+
+      .campaign-selector:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      /* Page Container */
+      .page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 32px 32px 60px;
+      }
+
+      /* Dashboard Header */
+      .dashboard-header {
+        margin-bottom: 32px;
+      }
+
+      .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 16px;
+      }
+
+      .dashboard-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #1a202c;
+        margin-bottom: 8px;
+      }
+
+      .dashboard-subtitle {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        color: #718096;
+        flex-wrap: wrap;
+      }
+
+      .update-indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        background: #d4fcdd;
+        color: #0a6e2c;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      .pulse {
+        width: 8px;
+        height: 8px;
+        background: #0a6e2c;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+      }
+
+      .iteration-badge {
+        padding: 6px 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      /* Summary Cards Row */
+      .summary-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
+      }
+
+      .summary-card-mini {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 2px solid transparent;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .summary-card-mini::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+      }
+
+      .summary-card-mini.purple::before {
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .summary-card-mini.pink::before {
+        background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+      }
+
+      .summary-card-mini.cyan::before {
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+      }
+
+      .summary-card-mini.green::before {
+        background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+      }
+
+      .summary-card-mini:hover {
+        border-color: #e2e8f0;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .summary-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        margin-bottom: 16px;
+      }
+
+      .summary-card-mini.purple .summary-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .summary-card-mini.pink .summary-icon {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      }
+
+      .summary-card-mini.cyan .summary-icon {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      }
+
+      .summary-card-mini.green .summary-icon {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      }
+
+      .summary-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #a0aec0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+      }
+
+      .summary-value {
+        font-size: 28px;
+        font-weight: 800;
+        color: #1a202c;
+        margin-bottom: 4px;
+      }
+
+      .summary-subtitle {
+        font-size: 13px;
+        color: #10b981;
+        font-weight: 600;
+      }
+
+      /* Metrics Section */
+      .metrics-section {
+        margin-bottom: 32px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1a202c;
+      }
+
+      .section-badge {
+        padding: 6px 12px;
+        background: #f7fafc;
+        color: #718096;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+
+      /* Metric Card */
+      .metric-card {
+        background: white;
+        border-radius: 16px;
+        padding: 28px;
+        transition: all 0.3s;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border: 2px solid transparent;
+        position: relative;
+      }
+
+      .metric-card:hover {
+        border-color: #e2e8f0;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .metric-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .metric-icon-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #f7fafc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .metric-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #718096;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .metric-value {
+        font-size: 36px;
+        font-weight: 800;
+        color: #1a202c;
+        margin-bottom: 8px;
+      }
+
+      .metric-subtitle {
+        font-size: 14px;
+        color: #10b981;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .metric-subtitle.neutral {
+        color: #718096;
+      }
+
+      /* Error Banner */
+      .error-banner {
+        background: white;
+        border-radius: 16px;
+        padding: 20px 24px;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        border-left: 4px solid #f5576c;
+      }
+
+      .error-banner.warning {
+        border-left-color: #fdcb6e;
+      }
+
+      .error-icon-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+      }
+
+      .error-banner .error-icon-circle {
+        background: #fee;
+      }
+
+      .error-banner.warning .error-icon-circle {
+        background: #fff3cd;
+      }
+
+      .error-content {
+        flex: 1;
+      }
+
+      .error-title {
+        font-weight: 700;
+        color: #dc2626;
+        margin-bottom: 4px;
+        font-size: 15px;
+      }
+
+      .error-banner.warning .error-title {
+        color: #856404;
+      }
+
+      .error-message {
+        font-size: 14px;
+        color: #718096;
+      }
+
+      .error-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .retry-button-small {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      }
+
+      .retry-button-small:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      .resume-button-small {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+      }
+
+      .resume-button-small:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(67, 233, 123, 0.4);
+      }
+
+      /* Loading State */
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        gap: 20px;
+      }
+
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #e2e8f0;
+        border-top-color: #667eea;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: #718096;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          gap: 12px;
+          align-items: stretch;
+          padding: 16px 20px;
+        }
+
+        .navbar-right {
+          flex-wrap: wrap;
+        }
+
+        .page-container {
+          padding: 24px 16px;
+        }
+
+        .dashboard-title {
+          font-size: 24px;
+        }
+
+        .metrics-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .summary-row {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-left">
+        <div class="logo">📊</div>
+        <div class="navbar-title">Campaign Dashboard</div>
+      </div>
+      <div class="navbar-right">
+        <button class="back-button">
+          <span class="back-arrow">←</span>
+          <span>Back</span>
+        </button>
+        <span class="divider">|</span>
+        <div class="selector-group">
+          <span class="selector-label">Campaign:</span>
+          <select class="campaign-selector">
+            <option value="1">Red Campaign</option>
+            <option value="2">Blue Campaign</option>
+            <option value="3">Green Campaign</option>
+            <option value="4">Yellow Campaign</option>
+          </select>
+        </div>
+      </div>
+    </nav>
+
+    <div class="page-container">
+      <!-- Dashboard Header -->
+      <div class="dashboard-header">
+        <div class="header-top">
+          <div>
+            <h1 class="dashboard-title">Red Campaign</h1>
+            <div class="dashboard-subtitle">
+              <span class="update-indicator">
+                <span class="pulse"></span>
+                Live updates
+              </span>
+              <span>•</span>
+              <span>Last updated: 2 seconds ago</span>
+              <span class="iteration-badge">Iteration #12</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optional: Error Banner -->
+      <!-- Uncomment to see:
+  <div class="error-banner warning">
+    <div class="error-icon-circle">⚠️</div>
+    <div class="error-content">
+      <div class="error-title">Auto-refresh Paused</div>
+      <div class="error-message">
+        Too many consecutive failures. Auto-refresh has been paused.
+      </div>
+    </div>
+    <div class="error-actions">
+      <button class="resume-button-small">Resume Updates</button>
+    </div>
+  </div>
+  -->
+
+      <!-- Summary Row -->
+      <div class="summary-row">
+        <div class="summary-card-mini purple">
+          <div class="summary-icon">👁</div>
+          <div class="summary-label">Total Impressions</div>
+          <div class="summary-value">45,231</div>
+          <div class="summary-subtitle">↑ 12% this week</div>
+        </div>
+
+        <div class="summary-card-mini pink">
+          <div class="summary-icon">👆</div>
+          <div class="summary-label">Total Clicks</div>
+          <div class="summary-value">1,834</div>
+          <div class="summary-subtitle">↑ 8% this week</div>
+        </div>
+
+        <div class="summary-card-mini cyan">
+          <div class="summary-icon">👥</div>
+          <div class="summary-label">Total Users</div>
+          <div class="summary-value">15,678</div>
+          <div class="summary-subtitle">↑ 15% this week</div>
+        </div>
+
+        <div class="summary-card-mini green">
+          <div class="summary-icon">📈</div>
+          <div class="summary-label">Overall CTR</div>
+          <div class="summary-value">4.05%</div>
+          <div class="summary-subtitle">Above average</div>
+        </div>
+      </div>
+
+      <!-- Totals Section -->
+      <div class="metrics-section">
+        <div class="section-header">
+          <h2 class="section-title">Totals (Accumulated)</h2>
+          <span class="section-badge">All Time</span>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <div class="metric-icon-circle">👁</div>
+              <div class="metric-title">Impressions</div>
+            </div>
+            <div class="metric-value">45,231</div>
+            <div class="metric-subtitle neutral">Total views</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <div class="metric-icon-circle">👆</div>
+              <div class="metric-title">Clicks</div>
+            </div>
+            <div class="metric-value">1,834</div>
+            <div class="metric-subtitle neutral">Total clicks</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <div class="metric-icon-circle">👥</div>
+              <div class="metric-title">Users</div>
+            </div>
+            <div class="metric-value">15,678</div>
+            <div class="metric-subtitle neutral">Unique visitors</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Section -->
+      <div class="metrics-section">
+        <div class="section-header">
+          <h2 class="section-title">Recent (Last Fetch)</h2>
+          <span class="section-badge">Latest Update</span>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <div class="metric-icon-circle">👁</div>
+              <div class="metric-title">Impressions</div>
+            </div>
+            <div class="metric-value">423</div>
+            <div class="metric-subtitle">↑ +12 from previous</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <div class="metric-icon-circle">👆</div>
+              <div class="metric-title">Clicks</div>
+            </div>
+            <div class="metric-value">18</div>
+            <div class="metric-subtitle">↑ +3 from previous</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <div class="metric-icon-circle">👥</div>
+              <div class="metric-title">Users</div>
+            </div>
+            <div class="metric-value">145</div>
+            <div class="metric-subtitle">↑ +8 from previous</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <div class="metric-icon-circle">📈</div>
+              <div class="metric-title">CTR</div>
+            </div>
+            <div class="metric-value">4.26%</div>
+            <div class="metric-subtitle">↑ Above average</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOADING STATE -->
+    <!-- Uncomment to see:
+<nav class="navbar">
+  <div class="navbar-left">
+    <div class="logo">📊</div>
+    <div class="navbar-title">Campaign Dashboard</div>
+  </div>
+  <div class="navbar-right">
+    <button class="back-button">
+      <span class="back-arrow">←</span>
+      <span>Back</span>
+    </button>
+  </div>
+</nav>
+<div class="page-container">
+  <div class="loading-container">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading dashboard data...</p>
+  </div>
+</div>
+-->
+  </body>
+</html>

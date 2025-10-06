@@ -1,0 +1,133 @@
+// src/pages/DashboardPage/dashboardPage.scss
+
+.dashboard-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 12px;
+}
+
+.dashboard-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #718096;
+
+  .dashboard-update {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    transition: all 0.2s ease;
+
+    // Live state (green)
+    &.live {
+      color: #0a6e2c;
+      background-color: #d4fcdd;
+
+      &::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background-color: #0a6e2c;
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+      }
+    }
+
+    // Paused state (gray)
+    &.paused {
+      color: #6c757d;
+      background-color: #e9ecef;
+
+      &::before {
+        content: "⏸";
+        font-size: 12px;
+      }
+    }
+  }
+
+  .iteration-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: #e0e7ff;
+    color: #4c51bf;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+}
+
+.metric-section {
+  margin-bottom: 40px;
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a202c;
+    }
+
+    .description {
+      color: #718096;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+// Pulse animation for live indicator
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}

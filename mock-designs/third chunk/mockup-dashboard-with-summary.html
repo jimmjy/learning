@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard with Summary Card - Mockup</title>
+  <style>
+    /* ========== CSS Reset & Base ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-blue: #007AFF;
+      --primary-blue-hover: #0051D5;
+      --green: #34C759;
+      --background-primary: #FFFFFF;
+      --background-secondary: #F5F5F7;
+      --text-primary: #1D1D1F;
+      --text-secondary: #6E6E73;
+      --text-tertiary: #86868B;
+      --border-color: #D2D2D7;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --border-radius: 12px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--background-secondary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========== Navbar ========== */
+    .navbar {
+      background: var(--background-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .navbar h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .navbar-right {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--background-secondary);
+      color: var(--text-primary);
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: var(--transition);
+      border: 1px solid var(--border-color);
+    }
+
+    .back-button:hover {
+      background: var(--border-color);
+    }
+
+    .campaign-selector {
+      padding: 8px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-primary);
+      background: var(--background-primary);
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .campaign-selector:hover {
+      border-color: var(--primary-blue);
+    }
+
+    /* ========== Main Content ========== */
+    .main-content {
+      flex: 1;
+      padding: 40px 32px;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .page-header {
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--green);
+      background: rgba(52, 199, 89, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ========== Campaign Summary Card ========== */
+    .summary-card {
+      background: linear-gradient(135deg, #007AFF 0%, #0051D5 100%);
+      color: white;
+      border-radius: var(--border-radius);
+      padding: 28px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25);
+      transition: var(--transition);
+    }
+
+    .summary-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+    }
+
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .summary-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: -0.2px;
+    }
+
+    .summary-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-metrics {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .summary-metric {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 100px;
+    }
+
+    .summary-metric-value {
+      font-size: 28px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .summary-metric-label {
+      font-size: 13px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+
+    .summary-divider {
+      opacity: 0.3;
+      font-size: 20px;
+      font-weight: 300;
+    }
+
+    .summary-footer {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 13px;
+      opacity: 0.9;
+      text-align: center;
+      font-weight: 400;
+    }
+
+    /* ========== Metrics Section ========== */
+    .metrics-section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .metric-card {
+      background: var(--background-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .metric-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-value.percentage {
+      color: var(--primary-blue);
+    }
+
+    .metric-subtitle {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 1200px) {
+      .summary-metrics {
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 12px 16px;
+      }
+
+      .navbar-right {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .main-content {
+        padding: 24px 16px;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .summary-card {
+        padding: 20px;
+      }
+
+      .summary-metrics {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .summary-divider {
+        display: none;
+      }
+
+      .summary-metric {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .summary-metric-value {
+        font-size: 24px;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar-left">
+        <h1>Campaign Dashboard</h1>
+      </div>
+      <div class="navbar-right">
+        <a href="#" class="back-button">← Back to Campaigns</a>
+        <select class="campaign-selector">
+          <option value="">Switch Campaign</option>
+          <option value="1" selected>Red Campaign</option>
+          <option value="2">Blue Campaign</option>
+          <option value="3">Green Campaign</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="header-left">
+          <h1>Red Campaign</h1>
+          <div class="header-meta">
+            <span class="status-badge">
+              <span class="status-dot"></span>
+              Auto-refreshing every 5s
+            </span>
+            <span>Last updated: Just now</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✨ NEW: Campaign Summary Card ✨ -->
+      <div class="summary-card">
+        <div class="summary-header">
+          <h3 class="summary-title">Campaign Performance Overview</h3>
+          <span class="summary-badge">
+            <span style="display: inline-block; width: 6px; height: 6px; background: white; border-radius: 50%; animation: pulse 2s infinite;"></span>
+            Live
+          </span>
+        </div>
+        
+        <div class="summary-metrics">
+          <div class="summary-metric">
+            <div class="summary-metric-value">1,234,567</div>
+            <div class="summary-metric-label">impressions</div>
+          </div>
+          
+          <div class="summary-divider">•</div>
+          
+          <div class="summary-metric">
+            <div class="summary-metric-value">5.00%</div>
+            <div class="summary-metric-label">CTR</div>
+          </div>
+          
+          <div class="summary-divider">•</div>
+          
+          <div class="summary-metric">
+            <div class="summary-metric-value">61,728</div>
+            <div class="summary-metric-label">clicks</div>
+          </div>
+          
+          <div class="summary-divider">•</div>
+          
+          <div class="summary-metric">
+            <div class="summary-metric-value">432,890</div>
+            <div class="summary-metric-label">users</div>
+          </div>
+        </div>
+        
+        <div class="summary-footer">
+          All metrics update automatically every 5 seconds
+        </div>
+      </div>
+
+      <!-- Total Metrics Section -->
+      <div class="metrics-section">
+        <h2 class="section-title">Total Metrics (All Time)</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-title">Total Impressions</div>
+            <div class="metric-value">1,234,567</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title">Total Clicks</div>
+            <div class="metric-value">61,728</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title">Total CTR</div>
+            <div class="metric-value percentage">5.00%</div>
+            <div class="metric-subtitle">(Total Clicks / Total Impressions) × 100</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title">Total Users</div>
+            <div class="metric-value">432,890</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Metrics Section -->
+      <div class="metrics-section">
+        <h2 class="section-title">Recent Metrics (Latest Iteration)</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-title">Recent Impressions</div>
+            <div class="metric-value">10,245</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title">Recent Clicks</div>
+            <div class="metric-value">512</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title">Recent CTR</div>
+            <div class="metric-value percentage">5.00%</div>
+            <div class="metric-subtitle">(Recent Clicks / Recent Impressions) × 100</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-title">Recent Users</div>
+            <div class="metric-value">3,586</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

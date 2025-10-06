@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campaign Dashboard - Red Campaign - Mockup</title>
+  <style>
+    /* ========== CSS Reset & Base ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Apple-inspired color palette */
+      --primary-blue: #007AFF;
+      --primary-blue-hover: #0051D5;
+      --green: #34C759;
+      --background-primary: #FFFFFF;
+      --background-secondary: #F5F5F7;
+      --background-tertiary: #FBFBFD;
+      --text-primary: #1D1D1F;
+      --text-secondary: #6E6E73;
+      --text-tertiary: #86868B;
+      --border-color: #D2D2D7;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --border-radius: 12px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--background-secondary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ========== Layout ========== */
+    .layout {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========== Navbar ========== */
+    .navbar {
+      background: var(--background-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .navbar h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .navbar-right {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--background-secondary);
+      color: var(--text-primary);
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: var(--transition);
+      border: 1px solid var(--border-color);
+    }
+
+    .back-button:hover {
+      background: var(--border-color);
+    }
+
+    .campaign-selector {
+      padding: 8px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text-primary);
+      background: var(--background-primary);
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .campaign-selector:hover {
+      border-color: var(--primary-blue);
+    }
+
+    .campaign-selector:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    }
+
+    /* ========== Main Content ========== */
+    .main-content {
+      flex: 1;
+      padding: 40px 32px;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ========== Page Header ========== */
+    .page-header {
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--green);
+      background: rgba(52, 199, 89, 0.1);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ========== Error Banner ========== */
+    .error-banner {
+      background: #FFF3CD;
+      border: 1px solid #FFE69C;
+      border-radius: var(--border-radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: none; /* Hidden by default */
+      align-items: center;
+      gap: 12px;
+    }
+
+    .error-banner.show {
+      display: flex;
+    }
+
+    .error-icon {
+      font-size: 20px;
+    }
+
+    .error-content {
+      flex: 1;
+    }
+
+    .error-message {
+      font-size: 14px;
+      font-weight: 500;
+      color: #856404;
+    }
+
+    .error-meta {
+      font-size: 13px;
+      color: #856404;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    .retry-button {
+      padding: 8px 16px;
+      background: #856404;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .retry-button:hover {
+      background: #6c5203;
+    }
+
+    /* ========== Metrics Grid ========== */
+    .metrics-section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    /* Make iteration card span full width or be centered */
+    .iteration-section {
+      margin-bottom: 32px;
+    }
+
+    .iteration-card {
+      background: var(--background-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      max-width: 400px;
+    }
+
+    /* ========== Metric Cards ========== */
+    .metric-card {
+      background: var(--background-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .metric-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -1px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-value.percentage {
+      color: var(--primary-blue);
+    }
+
+    .metric-subtitle {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ========== Loading State ========== */
+    .loading-spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--primary-blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ========== Responsive ========== */
+    @media (max-width: 1200px) {
+      .metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 12px 16px;
+      }
+
+      .navbar h1 {
+        font-size: 18px;
+      }
+
+      .navbar-right {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .main-content {
+        padding: 24px 16px;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .header-left h1 {
+        font-size: 28px;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-value {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar-left">
+        <h1>Campaign Dashboard</h1>
+      </div>
+      <div class="navbar-right">
+        <a href="#" class="back-button">← Back to Campaigns</a>
+        <select class="campaign-selector">
+          <option value="">Switch Campaign</option>
+          <option value="1" selected>Red Campaign</option>
+          <option value="2">Blue Campaign</option>
+          <option value="3">Green Campaign</option>
+          <option value="4">Yellow Campaign</option>
+          <option value="5">Orange Campaign</option>
+          <option value="6">Purple Campaign</option>
+        </select>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="header-left">
+          <h1>Red Campaign</h1>
+          <div class="header-meta">
+            <span class="status-badge">
+              <span class="status-dot"></span>
+              Auto-refreshing every 5s
+            </span>
+            <span>Last updated: Just now</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Banner (hidden by default) -->
+      <div class="error-banner">
+        <span class="error-icon">⚠️</span>
+        <div class="error-content">
+          <div class="error-message">Auto-refresh paused due to connection issues</div>
+          <div class="error-meta">Last updated 2 minutes ago</div>
+        </div>
+        <button class="retry-button">Retry Now</button>
+      </div>
+
+      <!-- Current Iteration -->
+      <div class="iteration-section">
+        <div class="iteration-card">
+          <div class="metric-title">Current Iteration</div>
+          <div class="metric-value">5</div>
+        </div>
+      </div>
+
+      <!-- Total Metrics Section -->
+      <div class="metrics-section">
+        <h2 class="section-title">Total Metrics (All Time)</h2>
+        <div class="metrics-grid">
+          <!-- Total Impressions -->
+          <div class="metric-card">
+            <div class="metric-title">Total Impressions</div>
+            <div class="metric-value">1,234,567</div>
+          </div>
+
+          <!-- Total Clicks -->
+          <div class="metric-card">
+            <div class="metric-title">Total Clicks</div>
+            <div class="metric-value">61,728</div>
+          </div>
+
+          <!-- Total CTR -->
+          <div class="metric-card">
+            <div class="metric-title">Total CTR</div>
+            <div class="metric-value percentage">5.00%</div>
+            <div class="metric-subtitle">(Total Clicks / Total Impressions) × 100</div>
+          </div>
+
+          <!-- Total Users -->
+          <div class="metric-card">
+            <div class="metric-title">Total Users</div>
+            <div class="metric-value">432,890</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Metrics Section -->
+      <div class="metrics-section">
+        <h2 class="section-title">Recent Metrics (Latest Iteration)</h2>
+        <div class="metrics-grid">
+          <!-- Recent Impressions -->
+          <div class="metric-card">
+            <div class="metric-title">Recent Impressions</div>
+            <div class="metric-value">10,245</div>
+          </div>
+
+          <!-- Recent Clicks -->
+          <div class="metric-card">
+            <div class="metric-title">Recent Clicks</div>
+            <div class="metric-value">512</div>
+          </div>
+
+          <!-- Recent CTR -->
+          <div class="metric-card">
+            <div class="metric-title">Recent CTR</div>
+            <div class="metric-value percentage">5.00%</div>
+            <div class="metric-subtitle">(Recent Clicks / Recent Impressions) × 100</div>
+          </div>
+
+          <!-- Recent Users -->
+          <div class="metric-card">
+            <div class="metric-title">Recent Users</div>
+            <div class="metric-value">3,586</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Demo: Toggle error banner
+    // Uncomment to show error state
+    // document.querySelector('.error-banner').classList.add('show');
+
+    // Demo: Simulate live updates
+    function simulateUpdate() {
+      // Increment iteration
+      const iterationValue = document.querySelector('.iteration-card .metric-value');
+      const currentIteration = parseInt(iterationValue.textContent);
+      iterationValue.textContent = currentIteration + 1;
+
+      // Update "Last updated" text
+      const lastUpdated = document.querySelector('.header-meta span:last-child');
+      lastUpdated.textContent = 'Last updated: Just now';
+
+      // Simulate number changes (in real app, this comes from Redux)
+      const recentImpressions = document.querySelector('.metrics-section:last-child .metric-card:nth-child(1) .metric-value');
+      recentImpressions.textContent = (Math.floor(Math.random() * 5000) + 8000).toLocaleString();
+    }
+
+    // Auto-refresh simulation (5 seconds)
+    // Uncomment to see live updates
+    // setInterval(simulateUpdate, 5000);
+  </script>
+</body>
+</html>

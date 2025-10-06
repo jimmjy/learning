@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error States - Mockup</title>
+  <style>
+    /* ========== CSS Reset & Base ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-blue: #007AFF;
+      --red: #FF3B30;
+      --orange: #FF9500;
+      --background-primary: #FFFFFF;
+      --background-secondary: #F5F5F7;
+      --text-primary: #1D1D1F;
+      --text-secondary: #6E6E73;
+      --text-tertiary: #86868B;
+      --border-color: #D2D2D7;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+      --border-radius: 12px;
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--background-secondary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+
+    .section {
+      background: var(--background-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+    }
+
+    .section-description {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    /* ========== Error Banner Styles ========== */
+    .error-banner {
+      border-radius: var(--border-radius);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Transient Error (Orange - retrying) */
+    .error-banner.transient {
+      background: #FFF3CD;
+      border: 1px solid #FFE69C;
+    }
+
+    .error-banner.transient .error-icon {
+      color: #856404;
+    }
+
+    .error-banner.transient .error-message {
+      color: #856404;
+    }
+
+    /* Persistent Error (Red - paused) */
+    .error-banner.persistent {
+      background: #F8D7DA;
+      border: 1px solid #F5C6CB;
+    }
+
+    .error-banner.persistent .error-icon {
+      color: #721C24;
+    }
+
+    .error-banner.persistent .error-message,
+    .error-banner.persistent .error-meta {
+      color: #721C24;
+    }
+
+    .error-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .error-content {
+      flex: 1;
+    }
+
+    .error-message {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .error-meta {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    .retry-button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .error-banner.transient .retry-button {
+      background: #856404;
+      color: white;
+    }
+
+    .error-banner.transient .retry-button:hover {
+      background: #6c5203;
+    }
+
+    .error-banner.persistent .retry-button {
+      background: #721C24;
+      color: white;
+    }
+
+    .error-banner.persistent .retry-button:hover {
+      background: #5a161d;
+    }
+
+    /* ========== Campaign List Error State ========== */
+    .error-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--background-primary);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .error-state-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      opacity: 0.6;
+    }
+
+    .error-state-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .error-state-description {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .error-state-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .error-state-button:hover {
+      background: #0051D5;
+    }
+
+    /* ========== Dashboard with Stale Data ========== */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .metric-card {
+      background: var(--background-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Stale data indicator */
+    .metric-card.stale {
+      opacity: 0.7;
+    }
+
+    .metric-card.stale::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 40px 40px 0;
+      border-color: transparent #FF9500 transparent transparent;
+    }
+
+    .stale-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transform: rotate(45deg) translate(12px, -12px);
+      z-index: 1;
+    }
+
+    .metric-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ========== Visual Comparison ========== */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .comparison-item {
+      padding: 20px;
+      background: var(--background-secondary);
+      border-radius: 8px;
+    }
+
+    .comparison-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+    }
+
+    .comparison-label.good {
+      color: #34C759;
+    }
+
+    .comparison-label.bad {
+      color: #FF3B30;
+    }
+
+    @media (max-width: 768px) {
+      .comparison {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Error States - Visual Guide</h1>
+    <p class="subtitle">All error scenarios and how they're displayed to users</p>
+
+    <!-- ========== Section 1: Dashboard Error - Transient ========== -->
+    <div class="section">
+      <h2 class="section-title">1. Dashboard - Transient Error (Retrying Automatically)</h2>
+      <p class="section-description">
+        <strong>When:</strong> API request fails but auto-refresh is still running (failures < 3)<br>
+        <strong>User Action:</strong> None required - system retries automatically<br>
+        <strong>Data State:</strong> Last good data remains visible
+      </p>
+
+      <div class="error-banner transient">
+        <span class="error-icon">⚠️</span>
+        <div class="error-content">
+          <div class="error-message">Connection issue - retrying automatically...</div>
+        </div>
+      </div>
+
+      <p style="font-size: 14px; color: var(--text-secondary); margin-top: 16px;">
+        ✅ <strong>Good UX:</strong> User sees error but doesn't need to do anything. Dashboard keeps showing last data.
+      </p>
+    </div>
+
+    <!-- ========== Section 2: Dashboard Error - Persistent ========== -->
+    <div class="section">
+      <h2 class="section-title">2. Dashboard - Persistent Error (Auto-Refresh Paused)</h2>
+      <p class="section-description">
+        <strong>When:</strong> 3 consecutive API failures - circuit breaker triggered<br>
+        <strong>User Action:</strong> Click "Retry Now" to resume auto-refresh<br>
+        <strong>Data State:</strong> Last good data remains visible (with timestamp)
+      </p>
+
+      <div class="error-banner persistent">
+        <span class="error-icon">⚠️</span>
+        <div class="error-content">
+          <div class="error-message">Auto-refresh paused due to connection issues</div>
+          <div class="error-meta">Last updated 2 minutes ago</div>
+        </div>
+        <button class="retry-button">Retry Now</button>
+      </div>
+
+      <p style="font-size: 14px; color: var(--text-secondary); margin-top: 16px;">
+        ✅ <strong>Good UX:</strong> Clear that auto-refresh stopped. Shows when data is stale. One-click to retry.
+      </p>
+    </div>
+
+    <!-- ========== Section 3: Dashboard with Stale Data Visual ========== -->
+    <div class="section">
+      <h2 class="section-title">3. Dashboard - Stale Data Indicators (Optional Enhancement)</h2>
+      <p class="section-description">
+        <strong>Enhancement Idea:</strong> Show visual indicator on metric cards when displaying stale data<br>
+        <strong>Note:</strong> This is optional - error banner is sufficient, but this adds extra clarity
+      </p>
+
+      <div class="metrics-grid">
+        <div class="metric-card stale">
+          <span class="stale-badge">STALE</span>
+          <div class="metric-title">Total Impressions</div>
+          <div class="metric-value">1,234,567</div>
+        </div>
+
+        <div class="metric-card stale">
+          <span class="stale-badge">STALE</span>
+          <div class="metric-title">Total Clicks</div>
+          <div class="metric-value">61,728</div>
+        </div>
+
+        <div class="metric-card stale">
+          <span class="stale-badge">STALE</span>
+          <div class="metric-title">Total CTR</div>
+          <div class="metric-value">5.00%</div>
+        </div>
+      </div>
+
+      <p style="font-size: 14px; color: var(--text-secondary); margin-top: 16px;">
+        💡 <strong>Optional:</strong> We can add this if you want extra visual emphasis. The error banner alone is probably sufficient.
+      </p>
+    </div>
+
+    <!-- ========== Section 4: Campaign List Error ========== -->
+    <div class="section">
+      <h2 class="section-title">4. Campaign List - Initial Load Failed</h2>
+      <p class="section-description">
+        <strong>When:</strong> Cannot load campaign list on page mount<br>
+        <strong>User Action:</strong> Click "Try Again" to retry<br>
+        <strong>Data State:</strong> No campaigns to show
+      </p>
+
+      <div class="error-state">
+        <div class="error-state-icon">⚠️</div>
+        <h3 class="error-state-title">Failed to Load Campaigns</h3>
+        <p class="error-state-description">
+          We couldn't load your campaigns. This might be a temporary connection issue.
+        </p>
+        <button class="error-state-button">
+          <span>🔄</span>
+          Try Again
+        </button>
+      </div>
+
+      <p style="font-size: 14px; color: var(--text-secondary); margin-top: 16px;">
+        ✅ <strong>Good UX:</strong> Clear error message with helpful explanation and obvious retry action.
+      </p>
+    </div>
+
+    <!-- ========== Section 5: Visual Comparison ========== -->
+    <div class="section">
+      <h2 class="section-title">5. Design Comparison: What Works vs What Doesn't</h2>
+
+      <div class="comparison">
+        <div class="comparison-item">
+          <div class="comparison-label bad">❌ BAD - Unclear Error</div>
+          <div style="background: #F8D7DA; padding: 12px; border-radius: 6px; font-size: 14px; color: #721C24;">
+            Error!
+          </div>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 12px;">
+            No context, no action, no help
+          </p>
+        </div>
+
+        <div class="comparison-item">
+          <div class="comparison-label good">✅ GOOD - Clear Error</div>
+          <div style="background: #FFF3CD; padding: 12px; border-radius: 6px; font-size: 14px; color: #856404;">
+            Connection issue - retrying automatically...
+          </div>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 12px;">
+            Explains what happened & what's being done
+          </p>
+        </div>
+
+        <div class="comparison-item">
+          <div class="comparison-label bad">❌ BAD - Data Cleared</div>
+          <div style="background: white; padding: 20px; border: 1px solid #D2D2D7; border-radius: 8px; text-align: center; color: var(--text-secondary);">
+            [Empty dashboard - no metrics shown]
+          </div>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 12px;">
+            User loses all context during error
+          </p>
+        </div>
+
+        <div class="comparison-item">
+          <div class="comparison-label good">✅ GOOD - Data Preserved</div>
+          <div style="background: white; padding: 20px; border: 1px solid #D2D2D7; border-radius: 8px;">
+            <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 4px;">TOTAL IMPRESSIONS</div>
+            <div style="font-size: 24px; font-weight: 700;">1,234,567</div>
+          </div>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 12px;">
+            User can still see their data
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Section 6: Color Coding Guide ========== -->
+    <div class="section">
+      <h2 class="section-title">6. Error Color System</h2>
+      <p class="section-description">
+        Consistent color coding helps users understand error severity at a glance
+      </p>
+
+      <div style="display: grid; gap: 16px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 40px; height: 40px; background: #FFF3CD; border: 1px solid #FFE69C; border-radius: 8px;"></div>
+          <div>
+            <div style="font-weight: 600; font-size: 14px; color: var(--text-primary);">Warning / Transient (Orange/Yellow)</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">Temporary issue, system handling it, no user action needed</div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 40px; height: 40px; background: #F8D7DA; border: 1px solid #F5C6CB; border-radius: 8px;"></div>
+          <div>
+            <div style="font-weight: 600; font-size: 14px; color: var(--text-primary);">Error / Persistent (Red)</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">System paused, user action required to continue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== Section 7: Implementation Notes ========== -->
+    <div class="section">
+      <h2 class="section-title">7. Implementation Checklist</h2>
+      
+      <div style="background: var(--background-secondary); padding: 20px; border-radius: 8px;">
+        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Required Error States:</h3>
+        <ul style="margin-left: 20px; line-height: 2;">
+          <li>✅ Dashboard: Transient error banner (yellow/orange)</li>
+          <li>✅ Dashboard: Persistent error banner (red) with retry button</li>
+          <li>✅ Campaign List: Full-page error state with retry</li>
+          <li>✅ All errors preserve last good data (don't clear screen)</li>
+          <li>✅ Error messages are user-friendly (no technical jargon)</li>
+          <li>✅ Clear next steps for user (automatic or manual)</li>
+        </ul>
+      </div>
+
+      <div style="background: var(--background-secondary); padding: 20px; border-radius: 8px; margin-top: 16px;">
+        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Optional Enhancements:</h3>
+        <ul style="margin-left: 20px; line-height: 2;">
+          <li>🎨 Stale data indicators on metric cards (orange corner badge)</li>
+          <li>🎨 Fade/opacity on stale metrics</li>
+          <li>🎨 Pulse animation on error icons</li>
+          <li>🎨 Toast notifications for successful retry</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
