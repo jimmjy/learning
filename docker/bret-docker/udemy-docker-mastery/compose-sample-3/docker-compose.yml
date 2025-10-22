@@ -1,4 +1,4 @@
-# version isn't needed as of 2020 for docker compose CLI. 
+# version isn't needed as of 2020 for docker compose CLI.
 # All 2.x and 3.x features supported
 # version: '2'
 
@@ -15,7 +15,7 @@ services:
     # but if you want to hardcode the name to something differnt, you can set it
     image: nginx-custom
     ports:
-      - '80:80'
+      - "80:80"
   web:
     image: httpd
     volumes:
