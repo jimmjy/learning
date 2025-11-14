@@ -16,7 +16,7 @@ const input = document.getElementById("input");
 const debounced = (fn, delay) => {
   let timeoutId;
 
-  return function (...args) {
+  return (...args) => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
