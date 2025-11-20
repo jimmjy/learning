@@ -1,0 +1,24 @@
+### 
+
+GET http://localhost:3000/favorites HTTP/1.1
+
+
+### 
+
+GET http://localhost:4000/favorites HTTP/1.1
+
+
+### 
+
+GET http://localhost:4000/people HTTP/1.1
+
+
+### 
+
+POST http://localhost:3000/favorites HTTP/1.1
+
+{
+  "name": "A New Hope",
+  "type": "movie",
+  "url": "http://swapi.dev/api/fils/1"
+}

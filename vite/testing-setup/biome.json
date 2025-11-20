@@ -1,0 +1,124 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":NODE:",
+              ":BUN:",
+              ":BLANK_LINE:",
+              ":PACKAGE:",
+              ":BLANK_LINE:",
+              ":ALIAS:",
+              ":BLANK_LINE:",
+              [
+                "@/components/**",
+                "#components/**",
+                "~/components/**",
+                "../components/**",
+                "./components/**"
+              ],
+              ":BLANK_LINE:",
+              [
+                "@/utils/**",
+                "#utils/**",
+                "~/utils/**",
+                "../utils/**",
+                "./utils/**"
+              ],
+              ":BLANK_LINE:",
+              [
+                "@/types/**",
+                "#types/**",
+                "~/types/**",
+                "../types/**",
+                "./types/**"
+              ],
+              ":BLANK_LINE:",
+              ["**/*.css", "**/*.scss", "**/*.sass", "**/*.less"],
+              ":BLANK_LINE:",
+              ":PATH:"
+            ],
+            "identifierOrder": "lexicographic"
+          }
+        },
+        "useSortedAttributes": {
+          "level": "on",
+          "options": {
+            "sortOrder": "natural"
+          }
+        },
+        "useSortedKeys": {
+          "level": "on",
+          "options": {
+            "sortOrder": "lexicographic"
+          }
+        }
+      }
+    },
+    "enabled": true
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules/",
+      "!**/dist/",
+      "!**/build",
+      "!**/.next",
+      "!**/coverage/"
+    ]
+  },
+  "formatter": {
+    "attributePosition": "auto",
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 80
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "semicolons": "always",
+      "trailingCommas": "es5"
+    }
+  },
+  "json": {
+    "formatter": {
+      "enabled": true,
+      "indentWidth": 2,
+      "trailingCommas": "none"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "a11y": {
+        "recommended": true
+      },
+      "complexity": {
+        "recommended": true
+      },
+      "performance": {
+        "recommended": true
+      },
+      "recommended": true,
+      "security": {
+        "recommended": true
+      }
+    }
+  },
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": false
+  }
+}
