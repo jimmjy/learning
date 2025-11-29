@@ -1,15 +1,13 @@
-FROM node:24
+FROM node:22
 
 WORKDIR /app
 
 COPY package.json .
 
-RUN npm install
+RUN npm i
 
 COPY . .
 
-EXPOSE 6000
-
 VOLUME [ "/app/node_modules" ]
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "start" ]

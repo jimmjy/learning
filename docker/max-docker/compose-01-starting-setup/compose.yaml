@@ -1,0 +1,56 @@
+services:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    container_name: mongodb # names are set by folders, this allows custom naming
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: james
+    #   MONGO_INITDB_ROOT_PASSWORD: secret
+    # MONGO_INITDB_ROOT_USERNAME=max
+    # adding env file below
+    env_file:
+      - ./env/mongo.env
+    # We don't need a network but this what that might look like for a service
+    # networks:
+    #   - full-stack
+  backend:
+    build: ./backend # looks for dockerfile in this location
+    # image: "goals-node" # <- we can specify an image but we want to build so
+    # this is here as example
+    # below is a long form build template
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile # You can put any name here that is a dockerfile
+    #   args:
+    #     some-arg: 1
+    ports:
+      - 80:80
+    volumes:
+      - logs:/app/logs
+      # bind mounts don't need to be added to entry volumes
+      - ./backend:/app # this is a bind mount and it is relative from this file
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+  frontend:
+    build: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/app/src
+    # add -it or interactive mode
+    stdin_open: true # let docker know this service needs open input
+    tty: true # attach terminal
+    # command: bash # this will get us into the terminal in container
+    depends_on:
+      - backend
+
+# any named volumes you have in services, you need to also create them here so
+# for mongodb service we need the data value.  Helps docker be aware and allows
+# sharing with other services if they are put here
+volumes:
+  data:
+  logs:

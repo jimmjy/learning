@@ -2,14 +2,14 @@ FROM node:18
 
 WORKDIR /app
 
-COPY package.json .
+COPY  package.json .
 
-RUN npm install
+RUN npm i
 
 COPY . .
 
 VOLUME [ "/app/node_modules" ]
 
-EXPOSE 80
+EXPOSE 4000
 
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "start" ]

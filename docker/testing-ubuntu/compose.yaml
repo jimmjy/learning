@@ -1,0 +1,8 @@
+services:
+  ubuntu:
+    image: ubuntu:latest
+    container_name: ubu-test
+    # the sets of commands below basically keep the container running
+    stdin_open: true
+    tty: true
+    command: bash
