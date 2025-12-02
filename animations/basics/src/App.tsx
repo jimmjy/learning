@@ -1,10 +1,10 @@
-import "./App.css";
-
 function App() {
+  const test = "hello";
+
   return (
     <div>
       <p>Transitions</p>
-      <div className=""></div>
+      <div className="">{test}</div>
     </div>
   );
 }
