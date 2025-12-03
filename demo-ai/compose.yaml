@@ -1,0 +1,14 @@
+services:
+  ollama:
+    image: ollama/ollama
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - 11434:11434
+
+volumes:
+  ollama:
+
+# docker compose up -d
+# if you run this, you need to go into the container, exec -it and pull the
+# model you want to use.  Make sure the same model is used when making requests

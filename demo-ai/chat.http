@@ -1,0 +1,14 @@
+### 
+
+POST http://localhost:11434/api/chat HTTP/1.1
+
+{
+  "messages": [
+    {
+      "content": "Can you tell me why the sky is blue",
+      "role": "user"
+    }
+  ],
+  "model": "Gemma3:1b",
+  "stream": false
+}
