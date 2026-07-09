@@ -23,7 +23,6 @@ for (let num of nums) {
     evens.push(num);
   }
 }
-
 console.log(evens);
 
 // functional approach
